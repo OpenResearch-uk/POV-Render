@@ -261,25 +261,25 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             st.text("Position")
-            pos_x = st.slider("X Pos", -10.0, 10.0, 0.0)
-            pos_y = st.slider("Y Pos", -10.0, 10.0, 0.0)
-            pos_z = st.slider("Z Pos", -10.0, 10.0, 0.0)
+            pos_x = st.slider("X Pos", -10.0, 10.0, 0.0, step=0.1)
+            pos_y = st.slider("Y Pos", -10.0, 10.0, 0.0, step=0.1)
+            pos_z = st.slider("Z Pos", -10.0, 10.0, 0.0, step=0.1)
             
             st.text("Color")
-            color_r = st.slider("Red", 0.0, 1.0, 1.0)
-            color_g = st.slider("Green", 0.0, 1.0, 1.0)
-            color_b = st.slider("Blue", 0.0, 1.0, 1.0)
+            color_r = st.slider("Red", 0.0, 1.0, 1.0, step=0.01)
+            color_g = st.slider("Green", 0.0, 1.0, 1.0, step=0.01)
+            color_b = st.slider("Blue", 0.0, 1.0, 1.0, step=0.01)
         
         with col2:
             st.text("Rotation")
-            rot_x = st.slider("X Rot", 0.0, 360.0, 0.0)
-            rot_y = st.slider("Y Rot", 0.0, 360.0, 0.0)
-            rot_z = st.slider("Z Rot", 0.0, 360.0, 0.0)
+            rot_x = st.slider("X Rot", 0.0, 360.0, 0.0, step=1.0)
+            rot_y = st.slider("Y Rot", 0.0, 360.0, 0.0, step=1.0)
+            rot_z = st.slider("Z Rot", 0.0, 360.0, 0.0, step=1.0)
             
             st.text("Scale")
-            scale_x = st.slider("X Scale", 0.1, 5.0, 1.0)
-            scale_y = st.slider("Y Scale", 0.1, 5.0, 1.0)
-            scale_z = st.slider("Z Scale", 0.1, 5.0, 1.0)
+            scale_x = st.slider("X Scale", 0.1, 5.0, 1.0, step=0.1)
+            scale_y = st.slider("Y Scale", 0.1, 5.0, 1.0, step=0.1)
+            scale_z = st.slider("Z Scale", 0.1, 5.0, 1.0, step=0.1)
         
         # Texture selector
         texture = st.selectbox("Texture", list(TEXTURES.keys()))
@@ -324,7 +324,8 @@ def main():
         with cam_col1:
             st.text("Camera Location")
             cam_x = st.slider("Cam X", -20.0, 20.0, 
-                            st.session_state.scene.camera['location'][0])
+                            float(st.session_state.scene.camera['location'][0]),
+                            step=0.1)
             cam_y = st.slider("Cam Y", -20.0, 20.0, 
                             st.session_state.scene.camera['location'][1])
             cam_z = st.slider("Cam Z", -20.0, 20.0, 
@@ -356,14 +357,16 @@ def main():
             light_col1, light_col2 = st.columns(2)
             
             with light_col1:
+                pos = list(light['position'])
                 light['position'] = (
-                    st.slider(f"Light {i+1} X", -20.0, 20.0, light['position'][0]),
-                    st.slider(f"Light {i+1} Y", -20.0, 20.0, light['position'][1]),
-                    st.slider(f"Light {i+1} Z", -20.0, 20.0, light['position'][2])
+                    st.slider(f"Light {i+1} X", min_value=-20.0, max_value=20.0, value=float(pos[0]), step=0.1),
+                    st.slider(f"Light {i+1} Y", min_value=-20.0, max_value=20.0, value=float(pos[1]), step=0.1),
+                    st.slider(f"Light {i+1} Z", min_value=-20.0, max_value=20.0, value=float(pos[2]), step=0.1)
                 )
             
             with light_col2:
-                light['intensity'] = st.slider(f"Light {i+1} Intensity", 0.0, 2.0, light['intensity'])
+                light['intensity'] = st.slider(f"Light {i+1} Intensity", 
+                                            min_value=0.0, max_value=2.0, value=float(light['intensity']), step=0.1)
                 light['color'] = (
                     st.slider(f"Light {i+1} R", 0.0, 1.0, light['color'][0]),
                     st.slider(f"Light {i+1} G", 0.0, 1.0, light['color'][1]),
